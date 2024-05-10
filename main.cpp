@@ -76,7 +76,7 @@ string PrintAgeOfMutant(const Age type)
     {
         case Age::Old: return "ПОЖИЛОЙ";
         case Age::Young: return "МОЛОДОЙ";
-        case Age::Newborn: return "Новорожденный";
+        case Age::Newborn: return "МЛАДЕНЕЦ";
     }
 };
 
@@ -187,7 +187,11 @@ Scum *MutantFactory(MutantType newMutant)
 };
 //----------------- task ---------------------
 
-void task(DBMutantContainerIterator it, int type_user_choice)
+void task(DBMutantContainerIterator it, 
+    int type_user_choise,
+    int leg_power_user_choise,
+    int hand_power_user_choise,
+    int age_user_choise)
 {
     it.First();
     int amount_of_mutants = it.GetCount();
@@ -197,16 +201,62 @@ void task(DBMutantContainerIterator it, int type_user_choice)
         Decorator dec_of_leg(it.GetLegPower());
         Decorator dec_of_age(it.GetAge());
         Decorator dec_of_hands(it.GetHandPower());
-        switch(type_user_choice)
+
+        switch(type_user_choise)
         {
             case 1:
-                dec_of_type.Find("ВАМПИР");
+                dec_of_leg.Find("ВАМПИР");
                 break;
             case 2:
                 dec_of_type.Find("ОБОРОТЕНЬ");
                 break;
             case 3:
                 dec_of_type.Find("ГОРГУЛЬЯ");
+                break;
+            case 4:
+                break;
+        };
+
+        switch(leg_power_user_choise)
+        {
+            case 1:
+                dec_of_leg.Find("Сильные ноги");
+                break;
+            case 2:
+                dec_of_leg.Find("Средние ноги");
+                break;
+            case 3:
+                dec_of_leg.Find("Слабые ноги");
+                break;
+            case 4:
+                break;
+        };
+
+        switch(hand_power_user_choise)
+        {
+            case 1:
+                dec_of_hands.Find("Сильные руки");
+                break;
+            case 2:
+                dec_of_hands.Find("Средние руки");
+                break;
+            case 3:
+                dec_of_hands.Find("Слабые руки");
+                break;
+            case 4:
+                break;
+        };
+
+        switch(age_user_choise)
+        {
+            case 1:
+                dec_of_age.Find("ПОЖИЛОЙ");
+                break;
+            case 2:
+                dec_of_age.Find("МОЛОДОЙ");
+                break;
+            case 3:
+                dec_of_age.Find("МЛАДЕНЕЦ");
                 break;
             case 4:
                 break;
@@ -242,8 +292,8 @@ int main()
         scumcell.AddMutant(MutantFactory(MutantType(rand()%3)));
     };*/
     DBMutantContainerIterator IT(DB);
-    int choise_of_type;
     
+    int choise_of_type;
     cout << "Выберите фильтр для типа мутанта: \n";
     cout << "1. ВАМПИР\n";
     cout << "2. ОБОРОТЕНЬ\n";
@@ -251,5 +301,37 @@ int main()
     cout << "4. Все\n";
     cout << "Ваш выбор: ";
     cin >> choise_of_type;
-    task(IT, choise_of_type);
+    system("clear");
+
+    int choise_of_leg_power;
+    cout << "Выберите фильтр для силы ног: \n";
+    cout << "1. Сильные ноги\n";
+    cout << "2. Средние ноги\n";
+    cout << "3. Слабые ноги\n";
+    cout << "4. Все\n";
+    cout << "Ваш выбор: ";
+    cin >> choise_of_leg_power;
+    system("clear");
+
+    int choise_of_hand_power;
+    cout << "Выберите фильтр для силы рук: \n";
+    cout << "1. Сильные руки\n";
+    cout << "2. Средние руки\n";
+    cout << "3. Слабые руки\n";
+    cout << "4. Все\n";
+    cout << "Ваш выбор: ";
+    cin >> choise_of_hand_power;
+    system("clear");
+
+    int choise_of_age;
+    cout << "Выберите возраст мутанта: \n";
+    cout << "1. ПОЖИЛОЙ\n";
+    cout << "2. МОЛОДОЙ\n";
+    cout << "3. МЛАДЕНЕЦ\n";
+    cout << "4. Все\n";
+    cout << "Ваш выбор: ";
+    cin >> choise_of_age;
+    system("clear");
+
+    task(IT, choise_of_type, choise_of_leg_power, choise_of_hand_power, choise_of_age);
 };
