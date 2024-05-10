@@ -193,9 +193,22 @@ void task(DBMutantContainerIterator it)
     int amount_of_mutants = it.GetCount();
     for (int i = 0; i<amount_of_mutants; i++)
     {
-        DecoratorType dec(it.GetType());
-        dec.FindType("ВАМПИР");
-        if (dec.GetCorrect() == true)
+        Decorator dec_of_type(it.GetType());
+        dec_of_type.Find("ВАМПИР");
+
+        Decorator dec_of_leg(it.GetLegPower());
+        dec_of_leg.Find("Сильные ноги");
+
+        Decorator dec_of_age(it.GetAge());
+        dec_of_age.Find("ПОЖИЛОЙ");
+
+        Decorator dec_of_hands(it.GetHandPower());
+        dec_of_hands.Find("Сильные руки");
+
+        if (dec_of_type.GetCorrect() == true && 
+            dec_of_age.GetCorrect() == true && 
+            dec_of_leg.GetCorrect() == true && 
+            dec_of_hands.GetCorrect() == true)
         {
             cout << "~~~~~~~~~~~~~~~~~~~~" << "\n";
             cout << "Тип: " << it.GetType() << "\n";
