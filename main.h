@@ -75,7 +75,6 @@ class DBMutantContainerIterator
         string GetType();
         string GetAge();
         void Next() {CurrentId++;};
-        //bool IsDone(int i) {return i>Count;};
 };
 
 class Decorator

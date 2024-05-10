@@ -187,24 +187,30 @@ Scum *MutantFactory(MutantType newMutant)
 };
 //----------------- task ---------------------
 
-void task(DBMutantContainerIterator it)
+void task(DBMutantContainerIterator it, int type_user_choice)
 {
     it.First();
     int amount_of_mutants = it.GetCount();
     for (int i = 0; i<amount_of_mutants; i++)
     {
         Decorator dec_of_type(it.GetType());
-        dec_of_type.Find("ВАМПИР");
-
         Decorator dec_of_leg(it.GetLegPower());
-        dec_of_leg.Find("Сильные ноги");
-
         Decorator dec_of_age(it.GetAge());
-        dec_of_age.Find("ПОЖИЛОЙ");
-
         Decorator dec_of_hands(it.GetHandPower());
-        dec_of_hands.Find("Сильные руки");
-
+        switch(type_user_choice)
+        {
+            case 1:
+                dec_of_type.Find("ВАМПИР");
+                break;
+            case 2:
+                dec_of_type.Find("ОБОРОТЕНЬ");
+                break;
+            case 3:
+                dec_of_type.Find("ГОРГУЛЬЯ");
+                break;
+            case 4:
+                break;
+        };
         if (dec_of_type.GetCorrect() == true && 
             dec_of_age.GetCorrect() == true && 
             dec_of_leg.GetCorrect() == true && 
@@ -224,7 +230,7 @@ int main()
 {
     srand(time(NULL));
     
-    sqlite3* DB;
+    sqlite3* DB;        //bool IsDone(int i) {return i>Count;};
     sqlite3_open("mydb.db", &DB);
     /*
     DBMutantContainer scumcell(DB);
@@ -236,5 +242,14 @@ int main()
         scumcell.AddMutant(MutantFactory(MutantType(rand()%3)));
     };*/
     DBMutantContainerIterator IT(DB);
-    task(IT);
+    int choise_of_type;
+    
+    cout << "Выберите фильтр для типа мутанта: \n";
+    cout << "1. ВАМПИР\n";
+    cout << "2. ОБОРОТЕНЬ\n";
+    cout << "3. ГОРГУЛЬЯ\n";
+    cout << "4. Все\n";
+    cout << "Ваш выбор: ";
+    cin >> choise_of_type;
+    task(IT, choise_of_type);
 };
