@@ -77,4 +77,31 @@ class DBMutantContainerIterator
         void Next() {CurrentId++;};
         //bool IsDone(int i) {return i>Count;};
 };
+
+class DecoratorType
+{
+    private:
+        string TargetType;
+        string CurrentType;
+        bool IsCorrect;
+    public:
+        DecoratorType(string currenttype)
+        {
+            CurrentType = currenttype;
+        };
+        void FindType(string targettype)
+        {
+            TargetType = targettype;
+            if (CurrentType == TargetType)
+            {
+                IsCorrect = true;
+            }
+            else
+            {
+                IsCorrect = false;
+            }
+        };
+        bool GetCorrect() {return IsCorrect;}
+};
+
 #endif FC_sqlH

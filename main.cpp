@@ -150,7 +150,6 @@ void DBMutantContainerIterator::First()
     int rc = sqlite3_prepare_v2(DB, sql, -1, &stmt, nullptr);
     rc = sqlite3_step(stmt);
     CurrentId = sqlite3_column_int(stmt, 0);
-    cout << CurrentId << "\n";
     sqlite3_finalize(stmt);
 };
 //------------------- db container functions ----------------------
@@ -194,11 +193,16 @@ void task(DBMutantContainerIterator it)
     int amount_of_mutants = it.GetCount();
     for (int i = 0; i<amount_of_mutants; i++)
     {
-        cout << "~~~~~~~~~~~~~~~~~~~~" << "\n";
-        cout << "Тип: " << it.GetType() << "\n";
-        cout << "Сила ног: " << it.GetHandPower() << "\n";
-        cout << "Сила рук: " << it.GetLegPower() << "\n";
-        cout << "Возраст: " << it.GetAge() << "\n";
+        DecoratorType dec(it.GetType());
+        dec.FindType("ВАМПИР");
+        if (dec.GetCorrect() == true)
+        {
+            cout << "~~~~~~~~~~~~~~~~~~~~" << "\n";
+            cout << "Тип: " << it.GetType() << "\n";
+            cout << "Сила ног: " << it.GetHandPower() << "\n";
+            cout << "Сила рук: " << it.GetLegPower() << "\n";
+            cout << "Возраст: " << it.GetAge() << "\n";
+        };
         it.Next();
     };
 }
