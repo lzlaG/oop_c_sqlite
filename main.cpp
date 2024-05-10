@@ -165,14 +165,16 @@ void DBMutantContainer::AddMutant(ScumPointer newMutant)
     string handpower = PrintHandPower(newMutant->GetHandPower());
     string legpower = PrintLegPower(newMutant->GetLegPower());
     string ageofmutant = PrintAgeOfMutant(newMutant->GetAgeOfMutant());
-    string query = "INSERT INTO Mutants (MutantType, StrengthOfHands, StrengthOfLegs, Age) VALUES ("
-    +quotesql(mutanttype)+","
-    +quotesql(handpower)+","
-    +quotesql(legpower)+","
-    +quotesql(ageofmutant)+");";
-    char *errmsg;
-    sqlite3_exec(DB, query.c_str(), NULL, NULL, &errmsg);
-    cout << errmsg << "\n";
+    sqlite3_stmt* stmt;
+    string insert_query = "INSERT INTO Mutants (MutantType,StrengthOfHands,StrengthOfLegs, Age)"
+                            "VALUES (:mutanttype,:power_of_hands,:power_of_legs, :age);";
+    sqlite3_prepare_v2(DB, insert_query.c_str(), -1, &stmt, NULL);
+    sqlite3_bind_text(stmt, sqlite3_bind_parameter_index(stmt, ":mutanttype"), mutanttype.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, sqlite3_bind_parameter_index(stmt, ":power_of_hands"), handpower.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, sqlite3_bind_parameter_index(stmt, ":power_of_legs"), legpower.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, sqlite3_bind_parameter_index(stmt, ":age"), ageofmutant.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
 };
 
 // ---------------------- factory method----------------------
@@ -280,9 +282,9 @@ int main()
 {
     srand(time(NULL));
     
-    sqlite3* DB;        //bool IsDone(int i) {return i>Count;};
+    sqlite3* DB;
     sqlite3_open("mydb.db", &DB);
-    /*
+    
     DBMutantContainer scumcell(DB);
     scumcell.ClearDB();
     int random_amount_of_mutant = random()%(100-10+1)+1;
@@ -290,7 +292,7 @@ int main()
     for (int i=0; i<random_amount_of_mutant; i++)
     {
         scumcell.AddMutant(MutantFactory(MutantType(rand()%3)));
-    };*/
+    };
     DBMutantContainerIterator IT(DB);
     
     int choise_of_type;

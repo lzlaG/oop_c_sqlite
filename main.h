@@ -42,7 +42,7 @@ class DBMutantContainer
         DBMutantContainer(sqlite3* db)
         {
             DB = db;
-            string createtable = "CREATE TABLE IF NOT EXISTS Mutants ("
+            string createtable = "CREATE TABLE Mutants ("
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                 "MutantType TEXT NOT NULL,"
                                 "StrengthOfHands TEXT,"
@@ -55,7 +55,6 @@ class DBMutantContainer
         };
         void AddMutant(ScumPointer newMutant);
         void ClearDB();
-        void CloseDB() {sqlite3_close(DB);}
 };
 
 class DBMutantContainerIterator
