@@ -281,11 +281,7 @@ void task(DBMutantContainerIterator it,
 int main()
 {
     srand(time(NULL));
-    
-    sqlite3* DB;
-    sqlite3_open("mydb.db", &DB);
-    
-    DBMutantContainer scumcell(DB);
+    DBMutantContainer scumcell("mydb.db");
     scumcell.ClearDB();
     int random_amount_of_mutant = random()%(100-10+1)+1;
     cout << "Генерируем " << random_amount_of_mutant << " мутантов" << "\n";
@@ -293,7 +289,7 @@ int main()
     {
         scumcell.AddMutant(MutantFactory(MutantType(rand()%3)));
     };
-    DBMutantContainerIterator IT(DB);
+    DBMutantContainerIterator IT(scumcell.GetDB());
     
     int choise_of_type;
     cout << "Выберите фильтр для типа мутанта: \n";

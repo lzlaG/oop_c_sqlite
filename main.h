@@ -39,9 +39,9 @@ class DBMutantContainer
     private:
         sqlite3* DB;
     public:
-        DBMutantContainer(sqlite3* db)
+        DBMutantContainer(const string& DB_path)
         {
-            DB = db;
+            sqlite3_open(DB_path.c_str(), &DB);
             string createtable = "CREATE TABLE Mutants ("
                                 "ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                                 "MutantType TEXT NOT NULL,"
@@ -55,6 +55,7 @@ class DBMutantContainer
         };
         void AddMutant(ScumPointer newMutant);
         void ClearDB();
+        sqlite3* GetDB() {return DB;}
 };
 
 class DBMutantContainerIterator
